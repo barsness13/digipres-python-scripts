@@ -11,13 +11,13 @@ csv_input = input("Enter the filepath of the input CSV: ")
 
 #check for header rows, return error to user if header rows detected
 with open(csv_input, mode='r', newline='', encoding="utf8", errors='ignore') as f:
-    lines = csv.reader(f)
-    for line in lines:
-        if os.path.isfile(line[0])==True:
+    rows = csv.reader(f)
+    for row in rows:
+        if os.path.isfile(row[0])==True:
             continue
         else:
             print()
-            print('PROBLEM WITH SOURCE FILES! It looks like',line[0],'is not a valid file/location. Please delete any header rows and make sure all the source files are in the listed location and try again.')
+            print('PROBLEM WITH SOURCE FILES! It looks like',row[0],'is not a valid file/location. Please delete any header rows and make sure all the source files are in the listed location and try again.')
             quit()
 print()
 print('This script will log its activities, including any naming issues or errors, in a new CSV.  You will need to provide a desired filepath and filename for this log.')
@@ -70,7 +70,7 @@ with open(csv_input, mode='r', newline='', encoding="utf8", errors='ignore') as 
                 periodissue=''
 
             #check for invalid characters
-            invalidcharmatches=re.findall(r'[^a-zA-Z0-9._\\\- ]',new_file)
+            invalidcharmatches=re.findall(r'[^a-zA-Z0-9._\\\-: ]',new_file)
             if len(invalidcharmatches)>0:
                 errorcount=errorcount+1
                 charissue='*filename/path contains special characters*'
