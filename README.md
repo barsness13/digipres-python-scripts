@@ -2,6 +2,7 @@
 Python scripts for UDC and digital preservation tasks
 
 ## rssharvester.py
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/14GR7YcNTpbJYmdCz1iFs3xopmuK_izKV)
 - written for Python 3.12.1
 - uses the following libraries:
   - feedparser (https://pypi.org/project/feedparser/)
