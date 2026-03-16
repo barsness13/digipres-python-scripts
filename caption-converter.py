@@ -7,7 +7,7 @@ from pathlib import Path
 import webvtt
 
 #get starting directory from user, validate, create a recursive file list
-print("This script will convert SBV, SRT, and VTT caption formats.  Simply point it at a folder where all your caption files are saved, and it will identify all the caption files in that folder and it's subfolders. It will automatically ensure you have both an SRT and VTT copy of each set of captions. It wil NOT convert into SBV format.")
+print("This script will convert SBV, SRT, and VTT caption formats.  Simply point it at a folder where all your caption files are saved, and it will identify all the caption files in that folder and it's subfolders. It will automatically ensure you have both an SRT and VTT copy of each set of captions, and a plaintext version without timestamps. It wil NOT convert into SBV format.")
 dirinput=input('Starting directory: ')
 if os.path.isdir(dirinput)==False:
     print()
