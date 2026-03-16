@@ -4,8 +4,10 @@ import re
 import srt_to_vtt
 from vtt_to_srt.vtt_to_srt import ConvertFile
 from pathlib import Path
+import webvtt
 
 #get starting directory from user, validate, create a recursive file list
+print("This script will convert SBV, SRT, and VTT caption formats.  Simply point it at a folder where all your caption files are saved, and it will identify all the caption files in that folder and it's subfolders. It will automatically ensure you have both an SRT and VTT copy of each set of captions. It wil NOT convert into SBV format.")
 dirinput=input('Starting directory: ')
 if os.path.isdir(dirinput)==False:
     print()
@@ -18,6 +20,8 @@ else:
     VTTcount=0
     SRTlist=[]
     SRTcount=0
+    SBVlist=[]
+    SBVcount=0
     skiplist=[]
     skipcount=0
     def list_files_recursive(path='.'):
@@ -43,6 +47,12 @@ for file in filelist:
         filecount=filecount+1
         VTTcount=VTTcount+1
         VTTlist.append(file)
+    
+    #put SBV files into one list
+    elif bool (re.search("[.][s][b][v]$", file)):
+        filecount=filecount+1
+        SBVcount=SBVcount+1
+        SBVlist.append(file)
         
     #put everything else into a skip list
     else:
@@ -54,6 +64,7 @@ for file in filelist:
 print('We checked ',filecount,' files and found:')
 print(SRTcount,' SRT files')
 print(VTTcount,' VTT files')
+print(SBVcount,' SBV files')
 print(skipcount,' other files will be skipped')
 print('-----')
 proceedinput=input('Are you ready to proceed? Enter "Y" to proceed or "N" to close this script: ')
@@ -77,6 +88,12 @@ for SRT in SRTlist:
 for VTT in VTTlist:
     SRT=ConvertFile(VTT, "utf-8")
     SRT.convert()
+    
+#convert SBV into VTT and SRT
+for SBV in SBVlist:
+    VTTfromSBV=webvtt.from_sbv(SBV).save(encoding='utf-8')
+    SRTfromSBV=ConvertFile(VTT, "utf-8")
+    SRTfromSBV.convert()
     
 #Make transcripts from VTT files
 #re-check starting directory for all files
@@ -104,7 +121,7 @@ for newVTT in newVTTlist:
     textpath=newVTT.replace(".vtt",".txt")
     textpath=Path(textpath)
     textlines=[]
-    with open(newVTT) as vtt:
+    with open(newVTT, encoding='utf-8') as vtt:
         alllines=vtt.readlines()
     for line in alllines:
         if line.startswith('WEBVTT'):
@@ -116,4 +133,4 @@ for newVTT in newVTTlist:
     with open(textpath, "w") as textfile:
         for line in textlines:
             textfile.write(line)
-print("Done!  This script has converted ",VTTcount," VTT files to SRT and plaintext, and ",SRTcount," SRT files to VTT and plaintext")
+print("Done!  This script has converted ",VTTcount," VTT files, ",SRTcount," SRT files , and ",SBVcount," SBV files.")
