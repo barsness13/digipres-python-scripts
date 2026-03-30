@@ -92,7 +92,7 @@ for VTT in VTTlist:
 #convert SBV into VTT and SRT
 for SBV in SBVlist:
     VTTfromSBV=webvtt.from_sbv(SBV).save(encoding='utf-8')
-    SRTfromSBV=ConvertFile(VTT, "utf-8")
+    SRTfromSBV=ConvertFile(SBV, "utf-8")
     SRTfromSBV.convert()
     
 #Make transcripts from VTT files
