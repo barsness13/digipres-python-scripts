@@ -116,6 +116,7 @@ for newfile in newfilelist:
     else:
         pass
 
+TXTlist=[]
 #convert VTT files to transcripts
 for newVTT in newVTTlist:
     textpath=newVTT.replace(".vtt",".txt")
@@ -133,4 +134,15 @@ for newVTT in newVTTlist:
     with open(textpath, "w") as textfile:
         for line in textlines:
             textfile.write(line)
+    TXTlist.append(textpath)
+    
+for TXT in TXTlist:
+    editfile=str(TXT)
+    writefile=str(TXT)
+    with open(editfile,"r",encoding="utf-8", errors='ignore') as editfile:
+        newtext=editfile.read().replace('\n',' ')
+    writetext=re.sub(' +', ' ',newtext)
+    with open(writefile,"w",encoding="utf-8",errors='ignore') as writefile:
+        writefile.write(writetext)
+
 print("Done!  This script has converted ",VTTcount," VTT files, ",SRTcount," SRT files , and ",SBVcount," SBV files.")
